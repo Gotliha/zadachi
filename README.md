@@ -2,6 +2,7 @@
 
 Задача 1: Книга
 #include <stdio.h>
+#include <string.h>
 
 struct Book {
     char title[100];
@@ -13,9 +14,13 @@ int main() {
     struct Book b;
 
     printf("Enter title: ");
-    scanf("%s", b.title);
+    fgets(b.title, 100, stdin);
+    b.title[strcspn(b.title, "\n")] = 0;
+
     printf("Enter author: ");
-    scanf("%s", b.author);
+    fgets(b.author, 100, stdin);
+    b.author[strcspn(b.author, "\n")] = 0;
+
     printf("Enter year: ");
     scanf("%d", &b.year);
 
@@ -27,6 +32,7 @@ int main() {
 
 Задача 2: Товар
 #include <stdio.h>
+#include <string.h>
 
 struct Product {
     char name[50];
@@ -38,9 +44,12 @@ int main() {
     struct Product p;
 
     printf("Enter name: ");
-    scanf("%s", p.name);
+    fgets(p.name, 50, stdin);
+    p.name[strcspn(p.name, "\n")] = 0;
+
     printf("Enter price: ");
     scanf("%f", &p.price);
+
     printf("Enter quantity: ");
     scanf("%d", &p.quantity);
 
@@ -63,14 +72,19 @@ int main() {
 
     printf("Enter x: ");
     scanf("%f", &p.x);
+
     printf("Enter y: ");
     scanf("%f", &p.y);
 
     float d = sqrt(p.x * p.x + p.y * p.y);
+
     printf("Distance from origin: %.2f\n", d);
 
     return 0;
 }
+
+
+gcc file.c -o prog -lm
 
 
 Задача 4: Час
@@ -83,9 +97,17 @@ struct Time {
 int main() {
     struct Time t;
 
-    scanf("%d %d %d", &t.h, &t.m, &t.s);
+    printf("Enter hours: ");
+    scanf("%d", &t.h);
+
+    printf("Enter minutes: ");
+    scanf("%d", &t.m);
+
+    printf("Enter seconds: ");
+    scanf("%d", &t.s);
 
     int total = t.h * 3600 + t.m * 60 + t.s;
+
     printf("Total seconds: %d\n", total);
 
     return 0;
@@ -102,7 +124,11 @@ struct Rectangle {
 int main() {
     struct Rectangle r;
 
-    scanf("%f %f", &r.w, &r.h);
+    printf("Enter width: ");
+    scanf("%f", &r.w);
+
+    printf("Enter height: ");
+    scanf("%f", &r.h);
 
     printf("Area: %.2f\n", r.w * r.h);
     printf("Perimeter: %.2f\n", 2 * (r.w + r.h));
@@ -122,10 +148,18 @@ struct Point {
 int main() {
     struct Point a, b;
 
-    scanf("%f %f", &a.x, &a.y);
-    scanf("%f %f", &b.x, &b.y);
+    printf("Point 1 - Enter x: ");
+    scanf("%f", &a.x);
+    printf("Point 1 - Enter y: ");
+    scanf("%f", &a.y);
 
-    float d = sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2));
+    printf("Point 2 - Enter x: ");
+    scanf("%f", &b.x);
+    printf("Point 2 - Enter y: ");
+    scanf("%f", &b.y);
+
+    float d = sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y));
+
     printf("Distance: %.2f\n", d);
 
     return 0;
@@ -134,6 +168,7 @@ int main() {
 
 Задача 7: Різниця часу
 #include <stdio.h>
+#include <stdlib.h>
 
 struct Time {
     int h, m, s;
@@ -149,7 +184,8 @@ int main() {
     scanf("%d %d %d", &t1.h, &t1.m, &t1.s);
     scanf("%d %d %d", &t2.h, &t2.m, &t2.s);
 
-    int diff = toSec(t2) - toSec(t1);
+    int diff = abs(toSec(t2) - toSec(t1));
+
     printf("Difference: %d seconds\n", diff);
 
     return 0;
@@ -158,6 +194,7 @@ int main() {
 
 Задача 8: Порівняння цін
 #include <stdio.h>
+#include <string.h>
 
 struct Product {
     char name[50];
@@ -167,8 +204,14 @@ struct Product {
 int main() {
     struct Product a, b;
 
-    scanf("%s %f", a.name, &a.price);
-    scanf("%s %f", b.name, &b.price);
+    fgets(a.name, 50, stdin);
+    a.name[strcspn(a.name, "\n")] = 0;
+    scanf("%f", &a.price);
+    getchar();
+
+    fgets(b.name, 50, stdin);
+    b.name[strcspn(b.name, "\n")] = 0;
+    scanf("%f", &b.price);
 
     if (a.price > b.price)
         printf("%s is more expensive\n", a.name);
